@@ -1,24 +1,26 @@
 # 06-country-explorer
 
-Interactive country explorer with search, filter, and detailed information using REST Countries API.
+✨ Professional Repository Showcase Template
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/mk-knight23/06-country-explorer)
+## Live Deployments
+
+- **GitHub Pages:** https://mk-knight23.github.io/06-country-explorer/
+- **Vercel:** https://06-country-explorer.vercel.app
+
+Status: 🟡 GH Pages Live | Vercel Pending (Daily Limit)
 
 ## Features
-- 🔍 Search countries by name
-- 🌍 Filter by region
-- 📊 Detailed country info
-- 🎬 Smooth animations
-- 📱 Responsive design
+- 📱 Mobile Responsive
+- ⚡ Fast Performance
+- 🎨 Modern UI/UX
 
 ## Quick Start
 ```bash
 git clone https://github.com/mk-knight23/06-country-explorer.git
-cd 06-country-explorer && npm install && npm run dev
+cd 06-country-explorer
+npm install
+npm run dev
 ```
-
-## Tech Stack
-React 18, TypeScript, Tailwind CSS, Axios, Framer Motion, REST Countries API
 
 ## License
 MIT
