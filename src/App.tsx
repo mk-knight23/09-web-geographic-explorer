@@ -66,39 +66,41 @@ function App() {
                 </div>
             </nav>
 
-            {/* Hero */}
-            <header className="py-20 bg-slate-900 text-white overflow-hidden relative">
-                <div className="absolute top-0 right-0 w-1/2 h-full opacity-10 pointer-events-none">
-                    <Globe className="w-full h-full scale-150 rotate-12" />
+            {/* Premium Hero Section */}
+            <header className="py-28 bg-slate-950 text-white overflow-hidden relative border-b border-white/5">
+                <div className="absolute inset-0 opacity-20 pointer-events-none">
+                    <div className="absolute top-[-10%] right-[-10%] w-[60%] h-[60%] bg-indigo-500/10 rounded-full blur-[120px] animate-pulse"></div>
+                    <div className="absolute bottom-[-10%] left-[-10%] w-[60%] h-[60%] bg-blue-500/10 rounded-full blur-[120px] animate-pulse delay-1000"></div>
                 </div>
 
                 <div className="max-w-7xl mx-auto px-6 relative z-10">
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, ease: "easeOut" }}
                     >
-                        <h1 className="text-5xl md:text-7xl font-black mb-8 leading-tight">
-                            Explore the <br />
-                            <span className="text-indigo-400">Digital World.</span>
+                        <h1 className="text-6xl md:text-8xl font-black mb-10 leading-[0.9] tracking-tighter">
+                            Discover the <br />
+                            <span className="bg-gradient-to-br from-indigo-400 via-white to-blue-400 bg-clip-text text-transparent">Great Unknown.</span>
                         </h1>
 
-                        <div className="flex flex-col md:flex-row gap-4 max-w-3xl">
+                        <div className="flex flex-col md:flex-row gap-4 max-w-4xl relative z-20">
                             <div className="flex-1 relative group">
-                                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-indigo-400 transition-colors" />
+                                <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-indigo-400 transition-colors" />
                                 <input
                                     type="text"
-                                    placeholder="Search countries by name..."
-                                    className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-12 focus:ring-2 focus:ring-indigo-500/50 outline-none transition-all"
+                                    placeholder="Search 250+ countries..."
+                                    className="w-full bg-white/[0.03] border border-white/10 rounded-[1.5rem] py-5 px-14 focus:ring-2 focus:ring-indigo-500/50 focus:bg-white/[0.08] outline-none transition-all placeholder:text-slate-600 font-medium text-lg"
                                     value={search}
                                     onChange={(e) => setSearch(e.target.value)}
                                 />
                             </div>
                             <select
-                                className="bg-white/5 border border-white/10 rounded-2xl py-4 px-6 md:w-48 outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all cursor-pointer"
+                                className="bg-white/[0.03] border border-white/10 rounded-[1.5rem] py-5 px-8 md:w-56 outline-none focus:ring-2 focus:ring-indigo-500/50 focus:bg-white/[0.08] transition-all cursor-pointer font-bold text-slate-300"
                                 value={region}
                                 onChange={(e) => setRegion(e.target.value)}
                             >
-                                {regions.map(r => <option key={r} value={r} className="text-slate-900">{r}</option>)}
+                                {regions.map(r => <option key={r} value={r} className="text-slate-900 bg-white">{r}</option>)}
                             </select>
                         </div>
                     </motion.div>
@@ -149,34 +151,34 @@ function CountryCard({ country, index, onClick }: { country: Country, index: num
     return (
         <motion.div
             layout
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            transition={{ delay: Math.min(index * 0.05, 0.5) }}
-            whileHover={{ y: -8 }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ delay: Math.min(index * 0.05, 0.4), duration: 0.5 }}
+            whileHover={{ y: -12, transition: { duration: 0.3 } }}
             onClick={onClick}
-            className="bg-white rounded-[2rem] overflow-hidden border border-slate-200 shadow-sm hover:shadow-2xl hover:shadow-indigo-500/10 transition-all cursor-pointer group"
+            className="bg-white rounded-[2.5rem] overflow-hidden border border-slate-100 shadow-sm hover:shadow-[0_32px_64px_-16px_rgba(79,70,229,0.12)] transition-all duration-300 cursor-pointer group flex flex-col h-full"
         >
-            <div className="h-44 overflow-hidden bg-slate-100">
+            <div className="h-52 overflow-hidden bg-slate-50 border-b border-slate-50">
                 <img
                     src={country.flags.svg}
                     alt={country.name.common}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
                 />
             </div>
-            <div className="p-6">
-                <h3 className="text-xl font-bold mb-4 group-hover:text-indigo-600 transition-colors line-clamp-1">
+            <div className="p-8 flex flex-col flex-1">
+                <h3 className="text-2xl font-black mb-5 group-hover:text-indigo-600 transition-colors line-clamp-1 tracking-tight">
                     {country.name.common}
                 </h3>
 
-                <div className="space-y-2 mb-6">
-                    <InfoRow icon={<Users className="w-3.5 h-3.5" />} label="Population" value={country.population.toLocaleString()} />
-                    <InfoRow icon={<Navigation className="w-3.5 h-3.5" />} label="Region" value={country.region} />
-                    <InfoRow icon={<MapPin className="w-3.5 h-3.5" />} label="Capital" value={country.capital?.[0] || 'N/A'} />
+                <div className="space-y-3 mb-8 flex-1">
+                    <InfoRow icon={<Users className="w-4 h-4" />} label="Population" value={country.population.toLocaleString()} />
+                    <InfoRow icon={<Navigation className="w-4 h-4" />} label="Region" value={country.region} />
+                    <InfoRow icon={<MapPin className="w-4 h-4" />} label="Capital" value={country.capital?.[0] || 'N/A'} />
                 </div>
 
-                <div className="flex items-center gap-2 text-indigo-600 font-bold text-sm uppercase tracking-wider group/btn">
-                    Full details <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                <div className="flex items-center gap-2 text-indigo-600 font-black text-xs uppercase tracking-[0.1em] group/btn">
+                    Explore deeper <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
                 </div>
             </div>
         </motion.div>
@@ -185,12 +187,12 @@ function CountryCard({ country, index, onClick }: { country: Country, index: num
 
 function InfoRow({ icon, label, value }: { icon: React.ReactNode, label: string, value: string }) {
     return (
-        <div className="flex items-center justify-between text-xs font-medium">
-            <div className="flex items-center gap-2 text-slate-400">
-                {icon}
-                <span>{label}</span>
+        <div className="flex items-center justify-between text-sm font-medium">
+            <div className="flex items-center gap-3 text-slate-400">
+                <div className="opacity-70 group-hover:opacity-100 group-hover:text-indigo-500 transition-all">{icon}</div>
+                <span className="font-bold text-[10px] uppercase tracking-widest">{label}</span>
             </div>
-            <span className="text-slate-900">{value}</span>
+            <span className="text-slate-900 font-bold tracking-tight">{value}</span>
         </div>
     );
 }
