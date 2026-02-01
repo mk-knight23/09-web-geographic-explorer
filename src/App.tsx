@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect, useCallback } from 'react';
+import axios, { AxiosError } from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Globe, Users, MapPin, Navigation, ArrowRight, Languages, Loader2, Info } from 'lucide-react';
+import { Search, Globe, Users, MapPin, Navigation, ArrowRight, Languages, Loader2, Info, AlertCircle, RefreshCw } from 'lucide-react';
 
 interface Country {
     name: { common: string };
@@ -14,25 +14,62 @@ interface Country {
     cca3: string;
 }
 
+interface ApiError {
+    message: string;
+    retryable: boolean;
+}
+
 function App() {
     const [countries, setCountries] = useState<Country[]>([]);
     const [search, setSearch] = useState('');
     const [region, setRegion] = useState('All');
     const [loading, setLoading] = useState(true);
     const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
+    const [error, setError] = useState<ApiError | null>(null);
+
+    const fetchCountries = useCallback(async (showLoading = true) => {
+        try {
+            if (showLoading) setLoading(true);
+            setError(null);
+
+            const res = await axios.get('https://restcountries.com/v3.1/all', {
+                timeout: 10000,
+            });
+
+            setCountries(res.data);
+        } catch (err) {
+            const axiosError = err as AxiosError;
+
+            if (axiosError.code === 'ECONNABORTED' || axiosError.code === 'ERR_NETWORK') {
+                setError({
+                    message: 'Network error. Please check your connection and try again.',
+                    retryable: true,
+                });
+            } else if (axiosError.response?.status === 429) {
+                setError({
+                    message: 'Too many requests. Please wait a moment and try again.',
+                    retryable: true,
+                });
+            } else {
+                setError({
+                    message: 'Failed to load country data. Please try again later.',
+                    retryable: true,
+                });
+            }
+        } finally {
+            setLoading(false);
+        }
+    }, []);
 
     useEffect(() => {
-        const fetchCountries = async () => {
-            try {
-                const res = await axios.get('https://restcountries.com/v3.1/all');
-                setCountries(res.data);
-            } catch (err) {
-                console.error(err);
-            } finally {
-                setLoading(false);
-            }
-        };
         fetchCountries();
+    }, [fetchCountries]);
+
+    // Input validation: sanitize search input
+    const handleSearchChange = useCallback((value: string) => {
+        // Remove special characters that might cause issues
+        const sanitized = value.replace(/[<>{}]/g, '');
+        setSearch(sanitized);
     }, []);
 
     const filteredCountries = countries.filter(c =>
@@ -45,19 +82,21 @@ function App() {
     return (
         <div className="min-h-screen bg-slate-50 text-slate-900 font-sans">
             {/* Navbar */}
-            <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
+            <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200" role="navigation" aria-label="Main navigation">
                 <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
                     <div className="flex items-center gap-2 font-black text-xl tracking-tight text-indigo-600">
-                        <Globe className="w-6 h-6" />
+                        <Globe className="w-6 h-6" aria-hidden="true" />
                         <span>EXPLO<span className="text-slate-900">GEO</span></span>
                     </div>
 
-                    <div className="hidden md:flex items-center gap-6">
+                    <div className="hidden md:flex items-center gap-6" role="group" aria-label="Region filters">
                         {regions.map(r => (
                             <button
                                 key={r}
                                 onClick={() => setRegion(r)}
                                 className={`text-sm font-bold transition-all ${region === r ? 'text-indigo-600' : 'text-slate-500 hover:text-slate-900'}`}
+                                aria-pressed={region === r}
+                                aria-label={`Filter by ${r}`}
                             >
                                 {r}
                             </button>
@@ -68,7 +107,7 @@ function App() {
 
             {/* Premium Hero Section */}
             <header className="py-28 bg-slate-950 text-white overflow-hidden relative border-b border-white/5">
-                <div className="absolute inset-0 opacity-20 pointer-events-none">
+                <div className="absolute inset-0 opacity-20 pointer-events-none" aria-hidden="true">
                     <div className="absolute top-[-10%] right-[-10%] w-[60%] h-[60%] bg-indigo-500/10 rounded-full blur-[120px] animate-pulse"></div>
                     <div className="absolute bottom-[-10%] left-[-10%] w-[60%] h-[60%] bg-blue-500/10 rounded-full blur-[120px] animate-pulse delay-1000"></div>
                 </div>
@@ -84,18 +123,44 @@ function App() {
                             <span className="bg-gradient-to-br from-indigo-400 via-white to-blue-400 bg-clip-text text-transparent">Great Unknown.</span>
                         </h1>
 
+                        {error && (
+                            <div className="mb-6 bg-red-500/10 border border-red-500/20 rounded-2xl p-6 flex items-start gap-4">
+                                <AlertCircle className="w-6 h-6 text-red-500 flex-shrink-0 mt-0.5" aria-hidden="true" />
+                                <div className="flex-1">
+                                    <p className="font-bold text-red-200 mb-2">Unable to load countries</p>
+                                    <p className="text-red-100/80 text-sm">{error.message}</p>
+                                </div>
+                                {error.retryable && (
+                                    <button
+                                        onClick={() => fetchCountries()}
+                                        className="flex items-center gap-2 px-4 py-2 bg-red-500 text-white font-bold rounded-xl hover:bg-red-600 transition-colors text-sm"
+                                        aria-label="Retry loading countries"
+                                    >
+                                        <RefreshCw className="w-4 h-4" aria-hidden="true" />
+                                        Retry
+                                    </button>
+                                )}
+                            </div>
+                        )}
+
                         <div className="flex flex-col md:flex-row gap-4 max-w-4xl relative z-20">
                             <div className="flex-1 relative group">
-                                <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-indigo-400 transition-colors" />
+                                <label htmlFor="country-search" className="sr-only">Search countries</label>
+                                <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-indigo-400 transition-colors" aria-hidden="true" />
                                 <input
+                                    id="country-search"
                                     type="text"
                                     placeholder="Search 250+ countries..."
                                     className="w-full bg-white/[0.03] border border-white/10 rounded-[1.5rem] py-5 px-14 focus:ring-2 focus:ring-indigo-500/50 focus:bg-white/[0.08] outline-none transition-all placeholder:text-slate-600 font-medium text-lg"
                                     value={search}
-                                    onChange={(e) => setSearch(e.target.value)}
+                                    onChange={(e) => handleSearchChange(e.target.value)}
+                                    aria-describedby="search-description"
                                 />
+                                <span id="search-description" className="sr-only">Type to filter countries by name</span>
                             </div>
+                            <label htmlFor="region-select" className="sr-only">Select region</label>
                             <select
+                                id="region-select"
                                 className="bg-white/[0.03] border border-white/10 rounded-[1.5rem] py-5 px-8 md:w-56 outline-none focus:ring-2 focus:ring-indigo-500/50 focus:bg-white/[0.08] transition-all cursor-pointer font-bold text-slate-300"
                                 value={region}
                                 onChange={(e) => setRegion(e.target.value)}
@@ -108,11 +173,21 @@ function App() {
             </header>
 
             {/* Content */}
-            <main className="max-w-7xl mx-auto px-6 py-20">
+            <main className="max-w-7xl mx-auto px-6 py-20" role="main" aria-label="Country list">
                 {loading ? (
-                    <div className="flex flex-col items-center justify-center py-20 gap-4">
-                        <Loader2 className="w-10 h-10 text-indigo-500 animate-spin" />
+                    <div className="flex flex-col items-center justify-center py-20 gap-4" role="status" aria-live="polite">
+                        <Loader2 className="w-10 h-10 text-indigo-500 animate-spin" aria-hidden="true" />
                         <p className="font-bold text-slate-400 uppercase tracking-widest text-sm">Mapping the fragments...</p>
+                    </div>
+                ) : error ? null : filteredCountries.length === 0 ? (
+                    <div className="text-center py-20">
+                        <p className="text-xl font-bold text-slate-400">No countries found matching "{search}"</p>
+                        <button
+                            onClick={() => setSearch('')}
+                            className="mt-4 text-indigo-600 font-black uppercase tracking-widest text-xs hover:underline"
+                        >
+                            Clear search
+                        </button>
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
@@ -147,7 +222,7 @@ function App() {
     );
 }
 
-function CountryCard({ country, index, onClick }: { country: Country, index: number, onClick: () => void }) {
+function CountryCard({ country, index, onClick }: { country: Country; index: number; onClick: () => void }) {
     return (
         <motion.div
             layout
@@ -158,11 +233,20 @@ function CountryCard({ country, index, onClick }: { country: Country, index: num
             whileHover={{ y: -12, transition: { duration: 0.3 } }}
             onClick={onClick}
             className="bg-white rounded-[2.5rem] overflow-hidden border border-slate-100 shadow-sm hover:shadow-[0_32px_64px_-16px_rgba(79,70,229,0.12)] transition-all duration-300 cursor-pointer group flex flex-col h-full"
+            role="button"
+            tabIndex={0}
+            aria-label={`View details for ${country.name.common}`}
+            onKeyPress={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    onClick();
+                }
+            }}
         >
-            <div className="h-52 overflow-hidden bg-slate-50 border-b border-slate-50">
+            <div className="h-52 overflow-hidden bg-slate-50 border-b border-slate-50" aria-hidden="true">
                 <img
                     src={country.flags.svg}
-                    alt={country.name.common}
+                    alt={`Flag of ${country.name.common}`}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
                 />
             </div>
@@ -178,18 +262,18 @@ function CountryCard({ country, index, onClick }: { country: Country, index: num
                 </div>
 
                 <div className="flex items-center gap-2 text-indigo-600 font-black text-xs uppercase tracking-[0.1em] group/btn">
-                    Explore deeper <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                    Explore deeper <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" aria-hidden="true" />
                 </div>
             </div>
         </motion.div>
     );
 }
 
-function InfoRow({ icon, label, value }: { icon: React.ReactNode, label: string, value: string }) {
+function InfoRow({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
     return (
         <div className="flex items-center justify-between text-sm font-medium">
             <div className="flex items-center gap-3 text-slate-400">
-                <div className="opacity-70 group-hover:opacity-100 group-hover:text-indigo-500 transition-all">{icon}</div>
+                <div className="opacity-70 group-hover:opacity-100 group-hover:text-indigo-500 transition-all" aria-hidden="true">{icon}</div>
                 <span className="font-bold text-[10px] uppercase tracking-widest">{label}</span>
             </div>
             <span className="text-slate-900 font-bold tracking-tight">{value}</span>
@@ -197,7 +281,17 @@ function InfoRow({ icon, label, value }: { icon: React.ReactNode, label: string,
     );
 }
 
-function CountryModal({ country, onClose }: { country: Country, onClose: () => void }) {
+function CountryModal({ country, onClose }: { country: Country; onClose: () => void }) {
+    // Handle escape key and focus trap
+    useEffect(() => {
+        const handleEscape = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') onClose();
+        };
+
+        document.addEventListener('keydown', handleEscape);
+        return () => document.removeEventListener('keydown', handleEscape);
+    }, [onClose]);
+
     return (
         <motion.div
             initial={{ opacity: 0 }}
@@ -205,6 +299,9 @@ function CountryModal({ country, onClose }: { country: Country, onClose: () => v
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-900/60 backdrop-blur-sm"
             onClick={onClose}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={`modal-title-${country.cca3}`}
         >
             <motion.div
                 initial={{ scale: 0.9, y: 20 }}
@@ -213,30 +310,33 @@ function CountryModal({ country, onClose }: { country: Country, onClose: () => v
                 className="bg-white rounded-[2.5rem] max-w-4xl w-full overflow-hidden shadow-2xl flex flex-col md:flex-row h-full max-h-[80vh]"
                 onClick={e => e.stopPropagation()}
             >
-                <div className="md:w-1/2 h-64 md:h-auto overflow-hidden bg-slate-100 flex-shrink-0">
-                    <img src={country.flags.svg} alt={country.name.common} className="w-full h-full object-cover" />
+                <div className="md:w-1/2 h-64 md:h-auto overflow-hidden bg-slate-100 flex-shrink-0" aria-hidden="true">
+                    <img src={country.flags.svg} alt={`Flag of ${country.name.common}`} className="w-full h-full object-cover" />
                 </div>
 
                 <div className="flex-1 p-8 md:p-12 overflow-y-auto">
                     <div className="flex items-center justify-between mb-8">
-                        <h2 className="text-4xl font-black text-slate-900">{country.name.common}</h2>
+                        <h2 id={`modal-title-${country.cca3}`} className="text-4xl font-black text-slate-900">
+                            {country.name.common}
+                        </h2>
                         <button
                             onClick={onClose}
                             className="p-3 bg-slate-100 hover:bg-slate-200 rounded-full transition-colors"
+                            aria-label="Close modal"
                         >
-                            <ArrowRight className="w-5 h-5 rotate-180" />
+                            <ArrowRight className="w-5 h-5 rotate-180" aria-hidden="true" />
                         </button>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
                         <div className="space-y-6">
-                            <DetailBox label="Subregion" value={country.subregion || 'N/A'} icon={<Navigation className="w-5 h-5 text-indigo-500" />} />
-                            <DetailBox label="Population" value={country.population.toLocaleString()} icon={<Users className="w-5 h-5 text-blue-500" />} />
-                            <DetailBox label="Languages" value={Object.values(country.languages || {}).join(', ') || 'N/A'} icon={<Languages className="w-5 h-5 text-purple-500" />} />
+                            <DetailBox label="Subregion" value={country.subregion || 'N/A'} icon={<Navigation className="w-5 h-5 text-indigo-500" aria-hidden="true" />} />
+                            <DetailBox label="Population" value={country.population.toLocaleString()} icon={<Users className="w-5 h-5 text-blue-500" aria-hidden="true" />} />
+                            <DetailBox label="Languages" value={Object.values(country.languages || {}).join(', ') || 'N/A'} icon={<Languages className="w-5 h-5 text-purple-500" aria-hidden="true" />} />
                         </div>
 
                         <div className="flex flex-col items-center justify-center p-8 rounded-3xl bg-slate-50 border border-slate-100 text-center">
-                            <Globe className="w-12 h-12 text-indigo-500 mb-4" />
+                            <Globe className="w-12 h-12 text-indigo-500 mb-4" aria-hidden="true" />
                             <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-1">Cca3 Code</p>
                             <p className="text-3xl font-black text-slate-900">{country.cca3}</p>
                         </div>
@@ -244,7 +344,7 @@ function CountryModal({ country, onClose }: { country: Country, onClose: () => v
 
                     <div className="mt-12">
                         <div className="flex items-center gap-2 text-indigo-600 font-bold mb-4">
-                            <Info className="w-4 h-4" />
+                            <Info className="w-4 h-4" aria-hidden="true" />
                             <span>Contextual Data</span>
                         </div>
                         <p className="text-slate-500 leading-relaxed italic border-l-4 border-slate-100 pl-4">
@@ -257,10 +357,10 @@ function CountryModal({ country, onClose }: { country: Country, onClose: () => v
     );
 }
 
-function DetailBox({ label, value, icon }: { label: string, value: string, icon: React.ReactNode }) {
+function DetailBox({ label, value, icon }: { label: string; value: string; icon: React.ReactNode }) {
     return (
         <div className="flex items-start gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center border border-slate-100 shrink-0">
+            <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center border border-slate-100 shrink-0" aria-hidden="true">
                 {icon}
             </div>
             <div>
