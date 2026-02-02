@@ -2,6 +2,9 @@
 
 ✨ A high-fidelity geographic data explorer providing real-time insights into nations across the globe with advanced filtering, error handling, and accessibility features.
 
+## 🚀 Live Demo
+**[View Live on Vercel](https://09-web-geographic-explorer.vercel.app)**
+
 ## Features
 - 🌍 Interactive Global Country Directory (250+ countries)
 - 🔍 Multi-Tiered Search & Regional Filtering
