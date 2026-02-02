@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: 09-web-geographic-explorer
+    env: static
+    buildCommand: npm run build
+    publishPath: dist
+    envVars:
+      - key: NODE_VERSION
+        value: 22
