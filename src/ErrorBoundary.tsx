@@ -20,8 +20,10 @@ export class ErrorBoundary extends Component<Props, State> {
     }
 
     componentDidCatch(error: Error, errorInfo: { componentStack: string }) {
-        // Log error - in production this would go to error reporting service
-        console.error('Error caught by boundary:', error, errorInfo);
+        // Error logging would go to error reporting service in production
+        // Example: Sentry.captureException(error, { extra: errorInfo });
+        void error;
+        void errorInfo;
     }
 
     render() {
