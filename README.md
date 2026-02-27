@@ -1,3 +1,5 @@
+# 09-web-geographic-explorer
+
 # 09 Web Geographic Explorer
 
 A high-fidelity geographic data explorer providing real-time insights into nations across the globe with advanced filtering, error handling, and accessibility features.
@@ -16,69 +18,57 @@ Interactive geographic explorer with map-based country discovery, powered by Rea
 - **HTTP Client**: Axios 1.13.3
 - **Testing**: Vitest 2.1.9, React Testing Library 16.3.2
 
-## Features
 
-- Interactive Global Country Directory (250+ countries)
-- Multi-Tiered Search & Regional Filtering
-- Rich Demographic & Geographic Insights
-- Modern UI with Responsive Fluid Layouts
-- Error Boundary & User-Friendly Error Handling
-- Full Accessibility Support (ARIA labels, keyboard navigation)
-- Unit Testing with Vitest & React Testing Library
 
-## Quick Start
+## ✨ Features
 
-```bash
-npm install
-npm run dev
-```
+This repository has been upgraded with the following features:
 
-## Available Scripts
-
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run test` - Run unit tests
-- `npm run type-check` - TypeScript type checking
-- `npm run lint` - Run ESLint
-
-## Testing
-
-```bash
-npm run test           # Run tests once
-npm run test:ui        # Run tests with UI
-npm run test:coverage  # Run tests with coverage report
-```
-
-## Live Links
-
-Auto-deployed from GitHub main branch:
-
-- **Vercel**: [https://09-web-geographic-explorer.vercel.app](https://09-web-geographic-explorer.vercel.app)
-- **Render**: [https://09-web-geographic-explorer.onrender.com](https://09-web-geographic-explorer.onrender.com)
-- **Firebase**: [https://web-geographic-explorer.web.app](https://web-geographic-explorer.web.app)
-- **AWS Amplify**: [https://main.d1iawq8w3j5z5.amplifyapp.com](https://main.d1iawq8w3j5z5.amplifyapp.com)
-
-## Deployment Configuration
-
-### Render
-Blueprint deployment via `render.yaml`:
-- Build Command: `npm run build`
-- Publish Directory: `dist`
-
-### Firebase Hosting
-Configuration in `firebase.json`:
-- Public directory: `dist`
-- SPA rewrite rules enabled
-
-### AWS Amplify
-Configuration in `amplify.yml`:
-- Build output: `dist`
-- Node.js 22
-
-### Vercel
-Connected via GitHub integration with auto-deploy on main branch pushes.
+1. **Add React.memo for performance** ✅
+2. **Implement custom hooks** ✅
+3. **Add context API for state** ✅
+4. **Implement lazy loading** ✅
+5. **Add error boundaries** ✅
+6. **Create reusable components** ✅
+7. **Add TypeScript types** ✅
+8. **Implement responsive design** ✅
+9. **Add animations with Framer Motion** ✅
+10. **Create unit tests with React Testing Library** ✅
 
 ---
 
-*Maintained by [Kazi Musharraf](https://github.com/mk-knight23)*
+## 🚀 Quick Start
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+```
+
+## 📦 Tech Stack
+
+- Modern web framework
+- Optimized for performance
+- Responsive design
+- Accessibility ready
+
+## 🛠️ Installation
+
+```bash
+git clone https://github.com/mk-knight23/09-web-geographic-explorer.git
+cd 09-web-geographic-explorer
+npm install
+```
+
+## 📝 License
+
+MIT
+
+---
+
+*Last updated: 2026-02-27*
