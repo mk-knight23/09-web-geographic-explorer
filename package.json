@@ -5,6 +5,7 @@
   "description": "Interactive geographic explorer with map-based country discovery, powered by React 19, TypeScript, and Tailwind CSS v4.",
   "type": "module",
   "scripts": {
+    "production": "npm run build && npm start",
     "lint": "eslint .",
     "dev": "vite",
     "build": "tsc && vite build",
