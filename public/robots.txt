@@ -1,3 +1,5 @@
-# https://www.robotstxt.org/robotstxt.html
 User-agent: *
+Allow: /
 Disallow:
+
+Sitemap: https://09-web-geographic-explorer.vercel.app/sitemap.xml
