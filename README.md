@@ -1,118 +1,34 @@
-# [![CI/CD](https://github.com/mk-knight23/09-web-geographic-explorer/actions/workflows/ci.yml/badge.svg)](https://github.com/mk-knight23/09-web-geographic-explorer/actions)
+# MK GeoScope
 
-# [![CI/CD](https://github.com/mk-knight23/09-web-geographic-explorer/actions/workflows/ci.yml/badge.svg)](https://github.com/mk-knight23/09-web-geographic-explorer/actions)
+**Country Information & Geographic Comparison**
 
-# 🚀 09-web-geographic-explorer (Collective Production Edition)
+Explore 250+ countries with population, languages, currencies. Compare nations side by side.
 
-## 💎 Overview
-Fully production-grade implementation of 09-web-geographic-explorer, refactored by the **69-Agent Opencode Collective**.
+🔗 **Live**: [https://09-web-geographic-explorer.vercel.app](https://09-web-geographic-explorer.vercel.app)
 
-## 🛡️ Trust & Compliance
-- **CI/CD**: Automated GitHub Actions with Gitleaks security scans.
-- **Security**: Standardized [SECURITY.md](SECURITY.md) protocol.
-- **Design**: Opencode Premium Design Tokens integrated.
+## Tech Stack
 
-## 🏁 48-Hour Roadmap
-1. Initialize infrastructure via `.github/workflows`.
-2. Set your secrets in GitHub Environment settings.
-3. Deploy to production via Vercel/Docker.
+React 19, TypeScript, Vite 6, Axios, REST Countries API
 
-This repository is part of the **60-Repo Evolution Project** - a comprehensive initiative to modernize, professionalize, and scale a portfolio of 60 web applications and portfolios.
-
-## 📋 Evolution Status
-
-| Phase | Status | Completion |
-|-------|--------|------------|
-| Phase 1: Portfolios & Web Apps | 🔄 In Progress | 01-20 |
-| Phase 2: SaaS & Tools | ⏳ Pending | 21-40 |
-| Phase 3: AI & Automation | ⏳ Pending | 41-60 |
-
-## 🛠️ Tech Stack
-
-- **Framework:** Dynamic (detected per repository)
-- **Deployment:** Multi-platform (Vercel, Netlify, Firebase, Cloudflare)
-- **CI/CD:** GitHub Actions
-- **Monitoring:** Automated via Evolution Workflow
-
-## 📦 What's Included
-
-### Documentation
-- ✅ Professional README.md
-- ✅ EVOLUTION.md tracking
-- ✅ LinkedIn content assets
-- ✅ Video scripts
-
-### CI/CD
-- ✅ GitHub Actions workflow
-- ✅ Automated testing
-- ✅ Security scanning
-- ✅ Deployment automation
-
-### Deployment Configs
-- ✅ Vercel (`vercel.json`)
-- ✅ Netlify (`netlify.toml`)
-- ✅ Firebase (`firebase.json`)
-- ✅ Cloudflare (`wrangler.toml`)
-
-## 🚀 Quick Start
+## Getting Started
 
 ```bash
-# Clone the repository
-git clone https://github.com/mk-knight23/09-web-geographic-explorer.git
-cd 09-web-geographic-explorer
-
-# Install dependencies
 npm install
-
-# Run development server
 npm run dev
-
-# Build for production
-npm run build
 ```
 
-## 📊 Evolution Metrics
+## Environment Variables
 
-| Metric | Score |
-|--------|-------|
-| Documentation | 20/20 |
-| CI/CD | 20/20 |
-| Deployment | 20/20 |
-| Code Quality | 20/20 |
-| Security | 20/20 |
-| **Total** | **100/100** |
+See `.env.example`.
 
-## 🌐 Deployment URLs
+## Contributing
 
-| Platform | URL |
-|----------|-----|
-| Vercel | https://09-web-geographic-explorer.vercel.app |
-| Netlify | https://09-web-geographic-explorer.netlify.app |
-| Firebase | https://09-web-geographic-explorer.web.app |
-| Cloudflare | https://09-web-geographic-explorer.pages.dev |
+See [CONTRIBUTING.md](CONTRIBUTING.md).
 
-## 📱 Social Media Assets
+## License
 
-- **LinkedIn Post:** `content/linkedin-post.md`
-- **Video Script:** `content/video-script.md`
-- **Thumbnail:** `assets/thumbnail.png`
-
-## 🤝 Contributing
-
-This repository is part of an automated evolution project. For issues or suggestions, please open a GitHub issue.
-
-## 📄 License
-
-MIT License - see LICENSE file for details
+MIT
 
 ---
 
-🦾 **Evolved with OpenClaw** | Part of the 60-Repo Evolution Project
-
-## Security
-
-This project follows security best practices:
-- No hardcoded credentials
-- Dependency scanning enabled
-- Security headers configured
-- Regular security audits performed
+Built with care by **Qazi Musharof** — [Kazi Developer](https://www.mkazi.live)
