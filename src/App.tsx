@@ -45,7 +45,7 @@ function useCountries() {
       setError(null);
 
       // Check sessionStorage cache first
-      const cached = sessionStorage.getItem('exploGeo_countries');
+      const cached = sessionStorage.getItem('mkGeoScope_countries');
       if (cached) {
         setCountries(JSON.parse(cached));
         setLoading(false);
@@ -56,7 +56,7 @@ function useCountries() {
         timeout: 15000,
       });
       setCountries(res.data);
-      sessionStorage.setItem('exploGeo_countries', JSON.stringify(res.data));
+      sessionStorage.setItem('mkGeoScope_countries', JSON.stringify(res.data));
     } catch (err) {
       const axiosError = err as AxiosError;
       if (axiosError.code === 'ECONNABORTED' || axiosError.code === 'ERR_NETWORK') {
@@ -76,13 +76,13 @@ function useCountries() {
 
 function useFavorites() {
   const [favorites, setFavorites] = useState<string[]>(() => {
-    return JSON.parse(localStorage.getItem('exploGeo_favorites') || '[]');
+    return JSON.parse(localStorage.getItem('mkGeoScope_favorites') || '[]');
   });
 
   const toggle = useCallback((cca3: string) => {
     setFavorites(prev => {
       const next = prev.includes(cca3) ? prev.filter(f => f !== cca3) : [...prev, cca3];
-      localStorage.setItem('exploGeo_favorites', JSON.stringify(next));
+      localStorage.setItem('mkGeoScope_favorites', JSON.stringify(next));
       return next;
     });
   }, []);
@@ -103,7 +103,7 @@ function Navbar({ regions, region, setRegion }: {
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2 font-black text-xl tracking-tight no-underline">
           <Globe className="w-6 h-6 text-blue-500" aria-hidden="true" />
-          <span className="gradient-text">EXPLO<span className="text-slate-900" style={{WebkitTextFillColor: '#0f172a'}}>GEO</span></span>
+          <span className="gradient-text">MK<span className="text-slate-900" style={{WebkitTextFillColor: '#0f172a'}}>GeoScope</span></span>
         </Link>
         <div className="hidden md:flex items-center gap-6" role="group" aria-label="Region filters">
           {regions.map(r => (
@@ -140,7 +140,7 @@ function Footer() {
           <Link to="/about" className="text-slate-500 hover:text-blue-500 no-underline font-medium">About</Link>
         </div>
         <p className="text-slate-400 font-medium text-sm">
-          Powered by REST Countries API • ExploGeo by Musharraf Kazi • © 2026
+          Powered by REST Countries API • MK GeoScope by Qazi Musharof • © 2026
         </p>
         <p className="text-slate-300 text-xs">
           <Link to="/about#privacy" className="text-slate-400 hover:text-blue-500 no-underline">Privacy Policy</Link>
@@ -360,9 +360,9 @@ function CountryPage({ countries }: { countries: Country[] }) {
 
   useEffect(() => {
     if (country) {
-      document.title = `${country.name.common} — ExploGeo | Country Data`;
+      document.title = `${country.name.common} — MK GeoScope | Country Data`;
     }
-    return () => { document.title = 'ExploGeo | Interactive Country Explorer'; };
+    return () => { document.title = 'MK GeoScope | Interactive Country Explorer'; };
   }, [country]);
 
   if (!country) {
@@ -624,9 +624,9 @@ function AboutPage() {
         <ArrowLeft className="w-4 h-4" /> Back
       </Link>
 
-      <h1 className="text-4xl font-black tracking-tight mb-4">About ExploGeo</h1>
+      <h1 className="text-4xl font-black tracking-tight mb-4">About MK GeoScope</h1>
       <p className="text-slate-500 mb-12 leading-relaxed">
-        ExploGeo is a free, interactive country explorer built for anyone curious about the world. Browse detailed information about every country — population, languages, currencies, borders, and more. Compare countries side by side.
+        MK GeoScope is a free, interactive country explorer built for anyone curious about the world. Browse detailed information about every country — population, languages, currencies, borders, and more. Compare countries side by side.
       </p>
 
       <div className="space-y-8">
@@ -645,7 +645,7 @@ function AboutPage() {
 
         <section id="privacy" className="glass-panel rounded-2xl p-8">
           <h2 className="text-xl font-black mb-4">Privacy Policy</h2>
-          <p className="text-slate-600 text-sm mb-4"><strong>Data Collection:</strong> ExploGeo does not collect personal data. No accounts, no registration required.</p>
+          <p className="text-slate-600 text-sm mb-4"><strong>Data Collection:</strong> MK GeoScope does not collect personal data. No accounts, no registration required.</p>
           <p className="text-slate-600 text-sm mb-4"><strong>Local Storage:</strong> Your favorites and preferences are stored in your browser's localStorage. This data never leaves your device.</p>
           <p className="text-slate-600 text-sm mb-4"><strong>API:</strong> Country data is fetched from the public REST Countries API. Flag images are served from their API.</p>
           <p className="text-slate-600 text-sm"><strong>Analytics:</strong> When analytics are enabled, we track anonymous usage events. No personal information is collected or transmitted.</p>
@@ -654,14 +654,14 @@ function AboutPage() {
 
         <section id="terms" className="glass-panel rounded-2xl p-8">
           <h2 className="text-xl font-black mb-4">Terms of Service</h2>
-          <p className="text-slate-600 text-sm">ExploGeo is provided "as is" without warranty. Country data is sourced from REST Countries API and may not reflect the most current information. This is a free educational and informational tool.</p>
+          <p className="text-slate-600 text-sm">MK GeoScope is provided "as is" without warranty. Country data is sourced from REST Countries API and may not reflect the most current information. This is a free educational and informational tool.</p>
           <p className="text-slate-400 text-xs mt-4">Last updated: July 2026</p>
         </section>
 
         <section className="glass-panel rounded-2xl p-8">
           <h2 className="text-xl font-black mb-4">Contact</h2>
           <p className="text-slate-600 text-sm">
-            Built by <strong>Musharraf Kazi</strong>.
+            Built by <strong>Qazi Musharof</strong>.
             For questions or suggestions, visit <a href="https://github.com/mk-knight23/09-web-geographic-explorer/issues" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">GitHub Issues</a>.
           </p>
         </section>
@@ -680,7 +680,7 @@ function NotFoundPage() {
       <h1 className="text-3xl font-black text-slate-400">Page Not Found</h1>
       <p className="text-slate-500">The page you're looking for doesn't exist.</p>
       <Link to="/" className="text-blue-500 font-bold hover:underline flex items-center gap-2 no-underline">
-        <ArrowLeft className="w-4 h-4" /> Back to ExploGeo
+        <ArrowLeft className="w-4 h-4" /> Back to MK GeoScope
       </Link>
     </div>
   );
@@ -697,7 +697,7 @@ function App() {
   const regions = ['All', 'Africa', 'Americas', 'Asia', 'Europe', 'Oceania'];
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans" role="application" aria-label="ExploGeo Country Explorer">
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans" role="application" aria-label="MK GeoScope Country Explorer">
       <Navbar regions={regions} region={region} setRegion={setRegion} />
 
       <Routes>
