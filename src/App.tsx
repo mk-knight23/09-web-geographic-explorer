@@ -99,18 +99,18 @@ function Navbar({ regions, region, setRegion }: {
   setRegion: (r: string) => void;
 }) {
   return (
-    <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200" role="navigation" aria-label="Main navigation">
+    <nav className="sticky top-0 z-50 glass-nav" role="navigation" aria-label="Main navigation">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2 font-black text-xl tracking-tight text-indigo-600 no-underline">
-          <Globe className="w-6 h-6" aria-hidden="true" />
-          <span>EXPLO<span className="text-slate-900">GEO</span></span>
+        <Link to="/" className="flex items-center gap-2 font-black text-xl tracking-tight no-underline">
+          <Globe className="w-6 h-6 text-blue-500" aria-hidden="true" />
+          <span className="gradient-text">EXPLO<span className="text-slate-900" style={{WebkitTextFillColor: '#0f172a'}}>GEO</span></span>
         </Link>
         <div className="hidden md:flex items-center gap-6" role="group" aria-label="Region filters">
           {regions.map(r => (
             <button
               key={r}
               onClick={() => setRegion(r)}
-              className={`text-sm font-bold transition-all ${region === r ? 'text-indigo-600' : 'text-slate-500 hover:text-slate-900'}`}
+              className={`text-sm font-bold transition-all ${region === r ? 'text-blue-500' : 'text-slate-500 hover:text-slate-900'}`}
               aria-pressed={region === r}
             >
               {r}
@@ -118,10 +118,10 @@ function Navbar({ regions, region, setRegion }: {
           ))}
         </div>
         <div className="flex items-center gap-3">
-          <Link to="/compare" className="hidden sm:flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white text-xs font-bold rounded-xl hover:bg-indigo-700 transition-colors no-underline">
+          <Link to="/compare" className="hidden sm:flex items-center gap-2 px-4 py-2 gradient-btn text-white text-xs font-bold rounded-full hover:shadow-lg hover:shadow-blue-500/20 transition-all no-underline">
             <Scale className="w-4 h-4" /> Compare
           </Link>
-          <Link to="/about" className="text-sm font-bold text-slate-500 hover:text-indigo-600 transition-colors no-underline">
+          <Link to="/about" className="text-sm font-bold text-slate-500 hover:text-blue-500 transition-colors no-underline">
             About
           </Link>
         </div>
@@ -132,20 +132,20 @@ function Navbar({ regions, region, setRegion }: {
 
 function Footer() {
   return (
-    <footer className="py-12 border-t border-slate-200 text-center mt-20">
+    <footer className="py-12 border-t border-white/30 text-center mt-20 relative z-10">
       <div className="max-w-7xl mx-auto px-6 space-y-4">
         <div className="flex justify-center gap-6 text-sm">
-          <Link to="/" className="text-slate-500 hover:text-indigo-600 no-underline font-medium">Home</Link>
-          <Link to="/compare" className="text-slate-500 hover:text-indigo-600 no-underline font-medium">Compare</Link>
-          <Link to="/about" className="text-slate-500 hover:text-indigo-600 no-underline font-medium">About</Link>
+          <Link to="/" className="text-slate-500 hover:text-blue-500 no-underline font-medium">Home</Link>
+          <Link to="/compare" className="text-slate-500 hover:text-blue-500 no-underline font-medium">Compare</Link>
+          <Link to="/about" className="text-slate-500 hover:text-blue-500 no-underline font-medium">About</Link>
         </div>
         <p className="text-slate-400 font-medium text-sm">
           Powered by REST Countries API • ExploGeo by Musharraf Kazi • © 2026
         </p>
         <p className="text-slate-300 text-xs">
-          <Link to="/about#privacy" className="text-slate-400 hover:text-indigo-600 no-underline">Privacy Policy</Link>
+          <Link to="/about#privacy" className="text-slate-400 hover:text-blue-500 no-underline">Privacy Policy</Link>
           {' • '}
-          <Link to="/about#terms" className="text-slate-400 hover:text-indigo-600 no-underline">Terms of Service</Link>
+          <Link to="/about#terms" className="text-slate-400 hover:text-blue-500 no-underline">Terms of Service</Link>
         </p>
       </div>
     </footer>
@@ -173,7 +173,7 @@ function CountryCard({ country, index, isFavorite, onToggleFavorite }: {
       transition={{ delay: Math.min(index * 0.03, 0.3), duration: 0.4 }}
       whileHover={{ y: -8, transition: { duration: 0.25 } }}
       onClick={() => { navigate(`/country/${slug}`); analytics.track('country_viewed', { country: country.name.common }); }}
-      className="bg-white rounded-[2rem] overflow-hidden border border-slate-100 shadow-sm hover:shadow-[0_24px_48px_-12px_rgba(79,70,229,0.12)] transition-all duration-300 cursor-pointer group flex flex-col h-full"
+      className="glass-card rounded-[2rem] overflow-hidden hover:shadow-[0_24px_48px_-12px_rgba(59,130,246,0.15)] transition-all duration-300 cursor-pointer group flex flex-col h-full"
       role="article"
       tabIndex={0}
       aria-label={`View details for ${country.name.common}`}
@@ -195,7 +195,7 @@ function CountryCard({ country, index, isFavorite, onToggleFavorite }: {
         </button>
       </div>
       <div className="p-6 flex flex-col flex-1">
-        <h3 className="text-xl font-black mb-4 group-hover:text-indigo-600 transition-colors line-clamp-1 tracking-tight">
+        <h3 className="text-xl font-black mb-4 group-hover:text-blue-500 transition-colors line-clamp-1 tracking-tight">
           {country.name.common}
         </h3>
         <div className="space-y-2 mb-6 flex-1">
@@ -203,7 +203,7 @@ function CountryCard({ country, index, isFavorite, onToggleFavorite }: {
           <InfoRow icon={<Navigation className="w-4 h-4" />} label="Region" value={country.region} />
           <InfoRow icon={<MapPin className="w-4 h-4" />} label="Capital" value={country.capital?.[0] || 'N/A'} />
         </div>
-        <div className="flex items-center gap-2 text-indigo-600 font-black text-xs uppercase tracking-[0.1em]">
+        <div className="flex items-center gap-2 text-blue-500 font-black text-xs uppercase tracking-[0.1em]">
           Explore <ArrowRight className="w-4 h-4" aria-hidden="true" />
         </div>
       </div>
@@ -255,16 +255,16 @@ function HomePage({
   return (
     <>
       {/* Hero */}
-      <header className="py-24 bg-slate-950 text-white overflow-hidden relative border-b border-white/5">
-        <div className="absolute inset-0 opacity-20 pointer-events-none" aria-hidden="true">
-          <div className="absolute top-[-10%] right-[-10%] w-[60%] h-[60%] bg-indigo-500/10 rounded-full blur-[120px]" />
-          <div className="absolute bottom-[-10%] left-[-10%] w-[60%] h-[60%] bg-blue-500/10 rounded-full blur-[120px]" />
+      <header className="py-24 bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 text-white overflow-hidden relative border-b border-white/5">
+        <div className="absolute inset-0 opacity-30 pointer-events-none" aria-hidden="true">
+          <div className="absolute top-[-10%] right-[-10%] w-[60%] h-[60%] bg-blue-500/15 rounded-full blur-[120px]" />
+          <div className="absolute bottom-[-10%] left-[-10%] w-[60%] h-[60%] bg-cyan-500/10 rounded-full blur-[120px]" />
         </div>
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: "easeOut" }}>
             <h1 className="text-5xl md:text-7xl font-black mb-8 leading-[0.9] tracking-tighter">
               Explore the <br />
-              <span className="bg-gradient-to-br from-indigo-400 via-white to-blue-400 bg-clip-text text-transparent">World&apos;s Data.</span>
+              <span className="bg-gradient-to-br from-blue-400 via-cyan-300 to-blue-400 bg-clip-text text-transparent">World&apos;s Data.</span>
             </h1>
             <p className="text-lg text-slate-400 max-w-2xl mb-8 leading-relaxed">
               Discover detailed information about 250+ countries — population, languages, currencies, borders, and more. Compare nations side by side.
@@ -286,18 +286,18 @@ function HomePage({
             <div className="flex flex-col md:flex-row gap-4 max-w-4xl relative z-20">
               <div className="flex-1 relative group">
                 <label htmlFor="country-search" className="sr-only">Search countries</label>
-                <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-indigo-400 transition-colors" />
+                <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-blue-400 transition-colors" />
                 <input
                   id="country-search"
                   type="text"
                   placeholder="Search 250+ countries..."
-                  className="w-full bg-white/[0.03] border border-white/10 rounded-[1.5rem] py-4 px-14 focus:ring-2 focus:ring-indigo-500/50 focus:bg-white/[0.08] outline-none transition-all placeholder:text-slate-600 font-medium text-lg"
+                  className="w-full bg-white/[0.06] border border-white/15 rounded-full py-4 px-14 focus:ring-2 focus:ring-blue-500/50 focus:bg-white/[0.1] outline-none transition-all placeholder:text-slate-500 font-medium text-lg backdrop-blur-sm"
                   value={search}
                   onChange={(e) => handleSearchChange(e.target.value)}
                 />
               </div>
               <select
-                className="bg-white/[0.03] border border-white/10 rounded-[1.5rem] py-4 px-8 md:w-56 outline-none focus:ring-2 focus:ring-indigo-500/50 focus:bg-white/[0.08] transition-all cursor-pointer font-bold text-slate-300"
+                className="bg-white/[0.06] border border-white/15 rounded-full py-4 px-8 md:w-56 outline-none focus:ring-2 focus:ring-blue-500/50 focus:bg-white/[0.1] transition-all cursor-pointer font-bold text-slate-300 backdrop-blur-sm"
                 value={region}
                 onChange={(e) => setRegion(e.target.value)}
                 aria-label="Select region"
@@ -310,10 +310,10 @@ function HomePage({
       </header>
 
       {/* Country Grid */}
-      <main className="max-w-7xl mx-auto px-6 py-16" role="main" aria-label="Country list">
+      <main className="max-w-7xl mx-auto px-6 py-16 relative z-10" role="main" aria-label="Country list">
         {loading ? (
           <div className="flex flex-col items-center justify-center py-20 gap-4" role="status" aria-live="polite">
-            <Loader2 className="w-10 h-10 text-indigo-500 animate-spin" />
+            <Loader2 className="w-10 h-10 text-blue-500 animate-spin" />
             <p className="font-bold text-slate-400 uppercase tracking-widest text-sm">Loading countries...</p>
           </div>
         ) : error ? null : filteredCountries.length === 0 ? (
@@ -321,7 +321,7 @@ function HomePage({
             <p className="text-xl font-bold text-slate-400">
               {region === 'Favorites' ? 'No favorites yet. Click the heart icon on any country to add it.' : `No countries found matching "${search}"`}
             </p>
-            {search && <button onClick={() => setSearch('')} className="mt-4 text-indigo-600 font-black uppercase tracking-widest text-xs hover:underline">Clear search</button>}
+            {search && <button onClick={() => setSearch('')} className="mt-4 text-blue-500 font-black uppercase tracking-widest text-xs hover:underline">Clear search</button>}
           </div>
         ) : (
           <>
@@ -370,13 +370,13 @@ function CountryPage({ countries }: { countries: Country[] }) {
       <div className="min-h-[60vh] flex flex-col items-center justify-center gap-4">
         {countries.length === 0 ? (
           <>
-            <Loader2 className="w-10 h-10 text-indigo-500 animate-spin" />
+            <Loader2 className="w-10 h-10 text-blue-500 animate-spin" />
             <p className="text-slate-400 font-bold">Loading country data...</p>
           </>
         ) : (
           <>
             <p className="text-2xl font-black text-slate-400">Country not found</p>
-            <button onClick={() => navigate('/')} className="text-indigo-600 font-bold hover:underline flex items-center gap-2">
+            <button onClick={() => navigate('/')} className="text-blue-500 font-bold hover:underline flex items-center gap-2">
               <ArrowLeft className="w-4 h-4" /> Back to all countries
             </button>
           </>
@@ -396,7 +396,7 @@ function CountryPage({ countries }: { countries: Country[] }) {
     <main className="max-w-6xl mx-auto px-6 py-12">
       <button
         onClick={() => navigate(-1)}
-        className="flex items-center gap-2 text-indigo-600 font-bold mb-8 hover:underline"
+        className="flex items-center gap-2 text-blue-500 font-bold mb-8 hover:underline"
       >
         <ArrowLeft className="w-4 h-4" /> Back
       </button>
@@ -436,7 +436,7 @@ function CountryPage({ countries }: { countries: Country[] }) {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <DetailBox icon={<Users className="w-5 h-5 text-indigo-500" />} label="Population" value={country.population.toLocaleString()} />
+            <DetailBox icon={<Users className="w-5 h-5 text-blue-500" />} label="Population" value={country.population.toLocaleString()} />
             <DetailBox icon={<Navigation className="w-5 h-5 text-blue-500" />} label="Region" value={`${country.region}${country.subregion ? ` · ${country.subregion}` : ''}`} />
             <DetailBox icon={<MapPin className="w-5 h-5 text-green-500" />} label="Capital" value={country.capital?.join(', ') || 'N/A'} />
             <DetailBox icon={<Languages className="w-5 h-5 text-purple-500" />} label="Languages" value={languageInfo} />
@@ -451,7 +451,7 @@ function CountryPage({ countries }: { countries: Country[] }) {
               href={country.maps.googleMaps}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 transition-colors no-underline"
+              className="inline-flex items-center gap-2 px-6 py-3 gradient-btn text-white font-bold rounded-xl hover:opacity-90 transition-colors no-underline"
             >
               <Globe className="w-4 h-4" /> View on Google Maps
             </a>
@@ -512,7 +512,7 @@ function ComparePage({ countries }: { countries: Country[] }) {
 
   return (
     <main className="max-w-7xl mx-auto px-6 py-12">
-      <Link to="/" className="flex items-center gap-2 text-indigo-600 font-bold mb-8 hover:underline no-underline">
+      <Link to="/" className="flex items-center gap-2 text-blue-500 font-bold mb-8 hover:underline no-underline">
         <ArrowLeft className="w-4 h-4" /> Back to all countries
       </Link>
 
@@ -525,17 +525,17 @@ function ComparePage({ countries }: { countries: Country[] }) {
         <input
           type="text"
           placeholder="Search countries to compare..."
-          className="w-full pl-12 pr-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/50 outline-none font-medium"
+          className="w-full pl-12 pr-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/50 outline-none font-medium"
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
         />
         {searchResults.length > 0 && (
-          <div className="absolute top-full mt-2 left-0 right-0 bg-white border border-slate-200 rounded-xl shadow-xl overflow-hidden z-20">
+          <div className="absolute top-full mt-2 left-0 right-0 glass-panel rounded-xl shadow-xl overflow-hidden z-20">
             {searchResults.map(c => (
               <button
                 key={c.cca3}
                 onClick={() => { setSelected(prev => [...prev, c.cca3]); setSearchText(''); analytics.track('compare_country_added', { country: c.name.common }); }}
-                className="w-full flex items-center gap-3 px-4 py-3 hover:bg-indigo-50 transition-colors text-left"
+                className="w-full flex items-center gap-3 px-4 py-3 hover:bg-blue-50/50 transition-colors text-left"
               >
                 <img src={c.flags.svg} alt="" className="w-8 h-5 rounded object-cover" />
                 <span className="font-bold text-sm">{c.name.common}</span>
@@ -553,7 +553,7 @@ function ComparePage({ countries }: { countries: Country[] }) {
             const c = countries.find(co => co.cca3 === cca3);
             if (!c) return null;
             return (
-              <div key={cca3} className="flex items-center gap-2 px-3 py-2 bg-indigo-50 border border-indigo-200 rounded-full">
+              <div key={cca3} className="flex items-center gap-2 px-3 py-2 bg-blue-50/50 border border-blue-300/50 rounded-full">
                 <img src={c.flags.svg} alt="" className="w-6 h-4 rounded object-cover" />
                 <span className="font-bold text-xs">{c.name.common}</span>
                 <button onClick={() => setSelected(prev => prev.filter(s => s !== cca3))} className="text-slate-400 hover:text-red-500 ml-1" aria-label={`Remove ${c.name.common}`}>×</button>
@@ -569,7 +569,7 @@ function ComparePage({ countries }: { countries: Country[] }) {
       {/* Comparison Table */}
       {compareCountries.length >= 2 && (
         <div className="overflow-x-auto">
-          <table className="w-full border-collapse bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200">
+          <table className="w-full border-collapse glass-panel rounded-2xl overflow-hidden">
             <thead>
               <tr className="bg-slate-50">
                 <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-widest">Attribute</th>
@@ -620,7 +620,7 @@ function ComparePage({ countries }: { countries: Country[] }) {
 function AboutPage() {
   return (
     <main className="max-w-3xl mx-auto px-6 py-12">
-      <Link to="/" className="flex items-center gap-2 text-indigo-600 font-bold mb-8 hover:underline no-underline">
+      <Link to="/" className="flex items-center gap-2 text-blue-500 font-bold mb-8 hover:underline no-underline">
         <ArrowLeft className="w-4 h-4" /> Back
       </Link>
 
@@ -630,7 +630,7 @@ function AboutPage() {
       </p>
 
       <div className="space-y-8">
-        <section className="bg-white rounded-2xl p-8 border border-slate-200">
+        <section className="glass-panel rounded-2xl p-8">
           <h2 className="text-xl font-black mb-4">Features</h2>
           <ul className="space-y-2 text-slate-600 text-sm">
             <li>• Browse 250+ countries with search and region filtering</li>
@@ -643,7 +643,7 @@ function AboutPage() {
           </ul>
         </section>
 
-        <section id="privacy" className="bg-white rounded-2xl p-8 border border-slate-200">
+        <section id="privacy" className="glass-panel rounded-2xl p-8">
           <h2 className="text-xl font-black mb-4">Privacy Policy</h2>
           <p className="text-slate-600 text-sm mb-4"><strong>Data Collection:</strong> ExploGeo does not collect personal data. No accounts, no registration required.</p>
           <p className="text-slate-600 text-sm mb-4"><strong>Local Storage:</strong> Your favorites and preferences are stored in your browser's localStorage. This data never leaves your device.</p>
@@ -652,17 +652,17 @@ function AboutPage() {
           <p className="text-slate-400 text-xs mt-4">Last updated: July 2026</p>
         </section>
 
-        <section id="terms" className="bg-white rounded-2xl p-8 border border-slate-200">
+        <section id="terms" className="glass-panel rounded-2xl p-8">
           <h2 className="text-xl font-black mb-4">Terms of Service</h2>
           <p className="text-slate-600 text-sm">ExploGeo is provided "as is" without warranty. Country data is sourced from REST Countries API and may not reflect the most current information. This is a free educational and informational tool.</p>
           <p className="text-slate-400 text-xs mt-4">Last updated: July 2026</p>
         </section>
 
-        <section className="bg-white rounded-2xl p-8 border border-slate-200">
+        <section className="glass-panel rounded-2xl p-8">
           <h2 className="text-xl font-black mb-4">Contact</h2>
           <p className="text-slate-600 text-sm">
             Built by <strong>Musharraf Kazi</strong>.
-            For questions or suggestions, visit <a href="https://github.com/mk-knight23/09-web-geographic-explorer/issues" target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">GitHub Issues</a>.
+            For questions or suggestions, visit <a href="https://github.com/mk-knight23/09-web-geographic-explorer/issues" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">GitHub Issues</a>.
           </p>
         </section>
       </div>
@@ -679,7 +679,7 @@ function NotFoundPage() {
       <Globe className="w-16 h-16 text-slate-300" />
       <h1 className="text-3xl font-black text-slate-400">Page Not Found</h1>
       <p className="text-slate-500">The page you're looking for doesn't exist.</p>
-      <Link to="/" className="text-indigo-600 font-bold hover:underline flex items-center gap-2 no-underline">
+      <Link to="/" className="text-blue-500 font-bold hover:underline flex items-center gap-2 no-underline">
         <ArrowLeft className="w-4 h-4" /> Back to ExploGeo
       </Link>
     </div>
