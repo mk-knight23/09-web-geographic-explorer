@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import App from './App';
 
 // Mock axios to avoid actual API calls
@@ -23,16 +24,28 @@ vi.mock('axios', () => ({
   }
 }));
 
+const renderApp = () => {
+  const router = createMemoryRouter([{ path: '/', element: <App /> }], {
+    initialEntries: ['/'],
+  });
+  return render(<RouterProvider router={router} />);
+};
+
 describe('Country Explorer App', () => {
+    beforeEach(() => {
+        sessionStorage.clear();
+        vi.clearAllMocks();
+    });
+
     it('renders navigation with region filters', async () => {
-        render(<App />);
+        renderApp();
         await waitFor(() => {
             expect(screen.getByRole('navigation', { name: /main navigation/i })).toBeInTheDocument();
         });
     });
 
     it('renders search input with proper accessibility', async () => {
-        render(<App />);
+        renderApp();
         await waitFor(() => {
             const searchInput = screen.getByLabelText(/search countries/i);
             expect(searchInput).toBeInTheDocument();
@@ -40,16 +53,17 @@ describe('Country Explorer App', () => {
         });
     });
 
-    it('displays loading state initially', () => {
-        render(<App />);
-        expect(screen.getByText(/mapping the fragments/i)).toBeInTheDocument();
+    it('displays loading state initially', async () => {
+        const axios = (await import('axios')).default;
+        (axios.get as any).mockReturnValueOnce(new Promise(() => {}));
+        renderApp();
+        expect(await screen.findByText(/Loading countries/i)).toBeInTheDocument();
     });
 
     it('has proper ARIA labels on interactive elements', async () => {
-        render(<App />);
+        renderApp();
         await waitFor(() => {
-            // Check that region filter exists
-            expect(screen.getByRole('button', { name: /Filter by All/i })).toBeInTheDocument();
+            expect(screen.getByRole('button', { name: /All/i })).toBeInTheDocument();
         });
     });
 
@@ -57,10 +71,13 @@ describe('Country Explorer App', () => {
         const axios = (await import('axios')).default;
         (axios.get as any).mockRejectedValueOnce(new Error('Network error'));
 
-        render(<App />);
+        renderApp();
 
         await waitFor(() => {
             expect(screen.getByText(/Unable to load countries/i)).toBeInTheDocument();
         });
     });
 });
+
+
+

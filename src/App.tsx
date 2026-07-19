@@ -140,7 +140,7 @@ function Footer() {
           <Link to="/about" className="text-slate-500 hover:text-blue-500 no-underline font-medium">About</Link>
         </div>
         <p className="text-slate-400 font-medium text-sm">
-          Powered by REST Countries API • MK GeoScope by Qazi Musharof • © 2026
+          Powered by REST Countries API • © 2026 <a href="https://www.mkazi.live" target="_blank" rel="noopener noreferrer" className="hover:text-blue-500 transition-colors">Qazi Musharof — Kazi Developer</a>. All rights reserved.
         </p>
         <p className="text-slate-300 text-xs">
           <Link to="/about#privacy" className="text-slate-400 hover:text-blue-500 no-underline">Privacy Policy</Link>
@@ -291,10 +291,12 @@ function HomePage({
                   id="country-search"
                   type="text"
                   placeholder="Search 250+ countries..."
+                  aria-describedby="search-desc"
                   className="w-full bg-white/[0.06] border border-white/15 rounded-full py-4 px-14 focus:ring-2 focus:ring-blue-500/50 focus:bg-white/[0.1] outline-none transition-all placeholder:text-slate-500 font-medium text-lg backdrop-blur-sm"
                   value={search}
                   onChange={(e) => handleSearchChange(e.target.value)}
                 />
+                <span id="search-desc" className="sr-only">Type a country name to search countries.</span>
               </div>
               <select
                 className="bg-white/[0.06] border border-white/15 rounded-full py-4 px-8 md:w-56 outline-none focus:ring-2 focus:ring-blue-500/50 focus:bg-white/[0.1] transition-all cursor-pointer font-bold text-slate-300 backdrop-blur-sm"
@@ -625,8 +627,11 @@ function AboutPage() {
       </Link>
 
       <h1 className="text-4xl font-black tracking-tight mb-4">About MK GeoScope</h1>
-      <p className="text-slate-500 mb-12 leading-relaxed">
+      <p className="text-slate-500 mb-6 leading-relaxed">
         MK GeoScope is a free, interactive country explorer built for anyone curious about the world. Browse detailed information about every country — population, languages, currencies, borders, and more. Compare countries side by side.
+      </p>
+      <p className="text-slate-500 mb-12 leading-relaxed">
+        Built and maintained by <a href="https://www.mkazi.live" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline"><strong>Qazi Musharof — Kazi Developer</strong></a>, an AI Engineer, Systems Architect, and Full-Stack Developer.
       </p>
 
       <div className="space-y-8">
